@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
-import { getReasonPhrase } from "http-status-codes";
+import { getReasonPhrase, StatusCodes } from "http-status-codes";
 
-import { Exception } from "../exceptions/exception.js";
+import { Exception } from "../exceptions/Exception.js";
+import { logger } from "../utils/logger.js";
 
 export const exceptionMiddleware = (
   error: Exception,
@@ -10,7 +11,9 @@ export const exceptionMiddleware = (
   res: Response,
   _next: NextFunction,
 ) => {
-  const status = error.getStatus();
+  logger.error("exceptionMiddleware - Exception:", error.message);
+
+  const status = error.getStatus?.() ?? StatusCodes.INTERNAL_SERVER_ERROR;
 
   res.status(status).json({
     code: status,

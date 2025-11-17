@@ -1,13 +1,12 @@
 import { StatusCodes } from "http-status-codes";
 
-import { prismaClient } from "../infrastructure/database.js";
-
-import { logger } from "../utils/logger.js";
-import { isEmail } from "../utils/email.js";
 import { AccountDTO } from "../dto/accountDTO.js";
-import { Exception } from "../exceptions/exception.js";
+import { Exception } from "../exceptions/Exception.js";
+import { prismaClient } from "../infrastructure/database.js";
+import { isEmail } from "../utils/email.js";
+import { logger } from "../utils/logger.js";
 
-class AccountService {
+export class AccountService {
   async getAccounts() {
     logger.info("AccountService.getAccount - start");
 
@@ -58,17 +57,24 @@ class AccountService {
   async deleteAccount(id: string) {
     logger.info("AccountService.deleteAccount - start");
 
-    const idAsNumber = parseInt(id, 10);
-    const result = await prismaClient.account.delete({
-      where: {
-        id: idAsNumber,
-      },
-    });
+    try {
+      const idAsNumber = parseInt(id, 10);
+      const result = await prismaClient.account.delete({
+        where: {
+          id: idAsNumber,
+        },
+      });
 
-    logger.info(
-      "AccountService.deleteAccount - deleted account with id: " + result.id,
-    );
-    logger.info("AccountService.deleteAccount - end");
+      logger.info(
+        "AccountService.deleteAccount - deleted account with id: " + result.id,
+      );
+      logger.info("AccountService.deleteAccount - end");
+    } catch (error) {
+      throw new Exception(
+        `Account not found for id: ${id}`,
+        StatusCodes.NOT_FOUND,
+      );
+    }
   }
 
   async updateAccount(id: string, account: AccountDTO) {
@@ -85,5 +91,3 @@ class AccountService {
     return { data: result };
   }
 }
-
-export const accountService = new AccountService();
