@@ -8,7 +8,6 @@ export class QueueClient {
 
   public async connect() {
     if (QueueClient.connection?.connection) return;
-    console.log("connectiong");
     QueueClient.connection = await amqplib.connect(
       `amqp://${process.env.QUEUE_URL}`,
     );
