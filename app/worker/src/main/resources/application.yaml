@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: worker
+  profiles:
+    active: usage_message
+
+tutorial:
+  client:
+    duration: 10000

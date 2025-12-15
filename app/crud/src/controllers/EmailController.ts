@@ -15,11 +15,14 @@ export class EmailController {
   }
 
   private createRoutes() {
-    this.router.post(this.path, this.sendEmail.bind(this));
+    this.router.post(this.path + ":accountId", this.sendEmail.bind(this));
   }
 
-  private async sendEmail(_request: Request, response: Response) {
-    await this.emailService.sendEmail();
+  private async sendEmail(
+    request: Request<{ accountId: string }>,
+    response: Response,
+  ) {
+    await this.emailService.sendEmail(request.params.accountId);
 
     response
       .status(StatusCodes.OK)

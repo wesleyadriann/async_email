@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Account {
@@ -12,4 +12,15 @@ model Account {
   name    String?  @db.VarChar(255)
   email   String   @unique @db.VarChar(255)
   password String @db.VarChar(255)
+  addresses Address[]
+}
+
+model Address {
+  id        Int     @id @default(autoincrement())
+  street    String  @db.VarChar(255)
+  city      String  @db.VarChar(100)
+  state     String  @db.VarChar(100)
+  zipCode   String  @db.VarChar(8)
+  account   Account @relation(fields: [accountId], references: [id])
+  accountId Int
 }

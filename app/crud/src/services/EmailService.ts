@@ -7,9 +7,9 @@ export class EmailService {
   constructor() {
     this.queueService = new QueueClient();
   }
-  async sendEmail() {
+  async sendEmail(accountId: string) {
     logger.info("EmailService.sendEmail - start");
-    const status = this.queueService.sendToQueue("hello world");
+    const status = this.queueService.sendToQueue(accountId);
 
     logger.info("EmailService.sendEmail - end - sucess:", status);
   }
