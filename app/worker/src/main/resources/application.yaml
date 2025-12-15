@@ -1,9 +1,11 @@
 spring:
   application:
     name: worker
-  profiles:
-    active: usage_message
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
-tutorial:
-  client:
-    duration: 10000
+rabbit:
+  queue_name: email_queue

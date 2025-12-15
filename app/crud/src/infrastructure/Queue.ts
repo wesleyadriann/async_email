@@ -16,7 +16,10 @@ export class QueueClient {
   }
 
   public sendToQueue(content: string) {
-    const buffer = Buffer.from(content);
-    return QueueClient.channel?.sendToQueue(this.QUEUE_NAME, buffer);
+    const buffer = Buffer.from(JSON.stringify({ data: content }));
+    return QueueClient.channel?.sendToQueue(this.QUEUE_NAME, buffer, {
+      priority: 0,
+      contentType: "application/json",
+    });
   }
 }

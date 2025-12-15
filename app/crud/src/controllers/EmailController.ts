@@ -15,7 +15,7 @@ export class EmailController {
   }
 
   private createRoutes() {
-    this.router.post(this.path + ":accountId", this.sendEmail.bind(this));
+    this.router.post(this.path + "/:accountId", this.sendEmail.bind(this));
   }
 
   private async sendEmail(
